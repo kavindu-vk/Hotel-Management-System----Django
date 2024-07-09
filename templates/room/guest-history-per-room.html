@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-12">
+      <div class="content-container">
+        <h2 class="text-center mb-4">Guest History in {{room.name}}</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th scope="col">Guest Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Room</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for g in guest %}
+                <tr class="text-center">
+                    <td>{{g.guest_name}}</td>
+                    <td>{{g.guest_email}}</td>
+                    <td>{{g.guest_phone}}</td>
+                    <td>{{g.room.name}}</td>
+                    <td>{{g.start_date}}</td>
+                    <td>{{g.end_date}}</td>
+                    <td>
+                        {% if g.checkedout %}
+                        <span class="badge bg-warning">Checked Out</span>
+                        {% else %}
+                        <span class="badge bg-success">Occupied</span>
+                        {% endif %}
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fas fa-bed"></i>
+                </div>
+                <div class="mr-5">{{ total_rooms }} Total Rooms</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="mr-5">{{ available_rooms }} Available Rooms</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="mr-5">{{ booked_rooms }} Booked Rooms</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <div class="mr-5">{{ total_bookings }} Total Bookings</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-chart-area"></i>
+                Booking Statistics
+            </div>
+            <div class="card-body">
+                <canvas id="bookingChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById('bookingChart').getContext('2d')
+    var bookingChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Rooms', 'Available Rooms', 'Booked Rooms', 'Total Bookings'],
+            datasets: [{
+                label: 'Statistics',
+                data: [{{ total_rooms }}, {{ available_rooms }}, {{ booked_rooms }}, {{ total_bookings }}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(0, 255, 145, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-12">
+      <div class="content-container">
+        <h2 class="text-center mb-4">All Rooms</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th scope="col">Categroy</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Booking</th>
+                <th scope="col">Guest History</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Info</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in rooms %}
+              <tr class="text-center">
+                <td>{{r.category}}</td>
+                <td>{{r.name}}</td>
+                {% if r.is_available %}
+                <td><span class="badge bg-primary">Available</span></td>
+                {% else %}
+                <td><span class="badge bg-warning">Occupied</span></td>
+                {% endif %}
+
+                {% if r.is_available %}
+                <td><a href="{% url 'new-booking' r.pk%}" class="btn btn-outline-primary btn-sm">Book Room</a></td>
+                {% else %}
+                <td><a href="{% url 'checkout-guest' r.booking_set.all.last.pk %}" class="btn btn-outline-warning btn-sm">Checkout Guest</a></td>
+                {% endif %}
+
+                <td><a href="{% url 'guest-history-per-room' r.pk%}" class="btn btn-primary btn-sm">View History</a></td>
+
+                <td>
+                    <a href="{% url 'update-room' r.pk%}" class="btn btn-primary btn-sm"> <i class="fa fa-pencil"></i> </a>
+                    <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ r.pk }}"> <i class="fa fa-trash"></i> </a>
+                </td>
+
+                <div class="modal fade" id="deleteModal{{ r.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ r.pk }}" aria-hidden="true">
+                  <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel{{ r.pk }}">Delete {{r.name}}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          Deleting this room would also permanently delete all booking that is associated with this room.
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="{% url 'delete-room' r.pk %}" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+
+                <td>
+                    {% if not r.is_available %}
+                    Occupied until {{r.booking_set.all.last.end_date}}
+                    {% else %}
+                    --
+                    {% endif %}
+                </td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock content %}
